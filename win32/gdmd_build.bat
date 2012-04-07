@@ -1,0 +1,5 @@
+@echo off
+setlocal EnableDelayedExpansion
+set "files="
+for %%i in (*.d;*.di) do set files=!files! %%i
+gdmd -m32 -ignore -lib -of..\gdc_win32_x32.lib -I..\ -version=Unicode -version=WindowsXP %files% 
