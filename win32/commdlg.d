@@ -421,6 +421,12 @@ struct OPENFILENAMEA {
 	DWORD         lCustData;
 	LPOFNHOOKPROC lpfnHook;
 	LPCSTR        lpTemplateName;
+    
+    static if (_WIN32_WINNT_ONLY && _WIN32_WINNT >= 0x0500) {
+        void          *pvReserved;
+        DWORD         dwReserved;
+        DWORD         FlagsEx;
+    }    
 }
 alias OPENFILENAMEA* LPOPENFILENAMEA;
 
@@ -445,6 +451,12 @@ struct OPENFILENAMEW {
 	DWORD         lCustData;
 	LPOFNHOOKPROC lpfnHook;
 	LPCWSTR       lpTemplateName;
+    
+    static if (_WIN32_WINNT_ONLY && _WIN32_WINNT >= 0x0500) {
+        void          *pvReserved;
+        DWORD         dwReserved;
+        DWORD         FlagsEx;
+    }       
 }
 alias OPENFILENAMEW* LPOPENFILENAMEW;
 
