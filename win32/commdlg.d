@@ -8,7 +8,7 @@
 *                       Placed into public domain                       *
 \***********************************************************************/
 module win32.commdlg;
-pragma(lib, "comdlg32.lib");
+pragma(lib, "comdlg32");
 
 private import win32.w32api;
 import win32.windef, win32.winuser;
@@ -32,7 +32,14 @@ enum : UINT {
 	CDN_SHAREVIOLATION = CDN_FIRST - 3,
 	CDN_HELP           = CDN_FIRST - 4,
 	CDN_FILEOK         = CDN_FIRST - 5,
-	CDN_TYPECHANGE     = CDN_FIRST - 6
+	CDN_TYPECHANGE     = CDN_FIRST - 6,
+}
+
+static if(_WIN32_WINNT >= 0x0500)
+{
+    enum : UINT {
+        CDN_INCLUDEITEM    = CDN_FIRST - 7,
+    }
 }
 
 enum : UINT {
@@ -289,7 +296,7 @@ alias CommDlg_OpenSave_GetFolderPath
 
 // Callbacks.
 extern(Windows) {
-alias UINT function (HWND, UINT, WPARAM, LPARAM)
+alias UINT_PTR function (HWND, UINT, WPARAM, LPARAM)
 	LPCCHOOKPROC, LPCFHOOKPROC, LPFRHOOKPROC, LPOFNHOOKPROC,
 	LPPAGEPAINTHOOK, LPPAGESETUPHOOK, LPSETUPHOOKPROC, LPPRINTHOOKPROC;
 }

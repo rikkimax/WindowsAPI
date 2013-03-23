@@ -9,7 +9,7 @@
 *                       Placed into public domain                       *
 \***********************************************************************/
 module win32.ddeml;
-pragma(lib, "user32.lib");
+pragma(lib, "user32");
 
 private import win32.basetsd, win32.windef, win32.winnt;
 
@@ -232,8 +232,8 @@ struct CONVINFO {
 alias CONVINFO* PCONVINFO;
 
 struct DDEML_MSG_HOOK_DATA {
-	UINT     uiLo;
-	UINT     uiHi;
+	UINT_PTR uiLo;
+	UINT_PTR uiHi;
 	DWORD    cbData;
 	DWORD[8] Data;
 }

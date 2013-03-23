@@ -9,7 +9,7 @@
 *                       Placed into public domain                       *
 \***********************************************************************/
 module win32.prsht;
-pragma(lib, "comctl32.lib");
+pragma(lib, "comctl32");
 
 private import win32.w32api, win32.windef, win32.winuser;
 
@@ -391,7 +391,7 @@ VOID PropSheet_CancelToClose(HWND hPropSheetDlg) {
 }
 
 int PropSheet_QuerySiblings(HWND hPropSheetDlg, WPARAM param1, LPARAM param2) {
-	return SendMessage(hPropSheetDlg, PSM_QUERYSIBLINGS, param1, param2);
+	return cast(int) SendMessage(hPropSheetDlg, PSM_QUERYSIBLINGS, param1, param2);
 }
 
 VOID PropSheet_UnChanged(HWND hPropSheetDlg, HWND hwndPage) {

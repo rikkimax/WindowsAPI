@@ -9,7 +9,7 @@
 *                       Placed into public domain                       *
 \***********************************************************************/
 module win32.shellapi;
-pragma(lib, "shell32.lib");
+pragma(lib, "shell32");
 
 private import win32.w32api, win32.windef, win32.basetyps;
 
@@ -174,6 +174,12 @@ const UINT
 	SHGFI_LINKOVERLAY       = 0x008000,
 	SHGFI_SELECTED          = 0x010000,
 	SHGFI_ATTR_SPECIFIED    = 0x020000;
+
+static if (_WIN32_IE >= 0x500) {
+	const uint
+		SHGFI_ADDOVERLAYS   = 0x000020,
+		SHGFI_OVERLAYINDEX  = 0x000040;
+}
 
 const SHERB_NOCONFIRMATION = 1;
 const SHERB_NOPROGRESSUI   = 2;

@@ -8,7 +8,7 @@
 \***********************************************************************/
 
 module win32.vfw;
-pragma(lib, "vfw32.lib");
+pragma(lib, "vfw32");
 
 private import
 	win32.commdlg,
@@ -35,7 +35,7 @@ DWORD MKFOURCC(char ch0, char ch1, char ch2, char ch3) {
 
 const ICVERSION = 0x0104;
 
-alias HANDLE HIC;
+alias TypeDef!(HANDLE) HIC;
 
 const BI_1632 = 0x32333631;
 
@@ -383,7 +383,7 @@ DWORD ICQueryAbout(HIC hic) {
 }
 
 DWORD ICAbout(HIC hic, HWND hwnd) {
-	return ICSendMessage(hic, ICM_ABOUT, cast(UINT)hwnd, 0);
+	return cast(DWORD) ICSendMessage(hic, ICM_ABOUT, cast(DWORD_PTR) cast(UINT_PTR) hwnd, 0);
 }
 
 DWORD ICQueryConfigure(HIC hic) {
@@ -391,15 +391,15 @@ DWORD ICQueryConfigure(HIC hic) {
 }
 
 DWORD ICConfigure(HIC hic, HWND hwnd) {
-	return ICSendMessage(hic, ICM_CONFIGURE, cast(UINT)hwnd, 0);
+	return cast(DWORD) ICSendMessage(hic, ICM_CONFIGURE, cast(DWORD_PTR) cast(UINT_PTR) hwnd, 0);
 }
 
 DWORD ICGetState(HIC hic, LPVOID pv, DWORD_PTR cb) {
-	return ICSendMessage(hic, ICM_GETSTATE, cast(DWORD)pv, cast(DWORD)cb);
+	return cast(DWORD) ICSendMessage(hic, ICM_GETSTATE, cast(DWORD_PTR) pv, cb);
 }
 
 DWORD ICSetState(HIC hic, LPVOID pv, DWORD_PTR cb) {
-	return ICSendMessage(hic, ICM_SETSTATE, cast(DWORD)pv, cast(DWORD)cb);
+	return cast(DWORD) ICSendMessage(hic, ICM_SETSTATE, cast(DWORD_PTR) pv, cb);
 }
 
 DWORD ICGetStateSize(HIC hic) {
@@ -419,7 +419,7 @@ DWORD ICGetDefaultKeyFrameRate(HIC hic) {
 }
 
 DWORD ICDrawWindow(HIC hic, LPVOID prc) {
-	return ICSendMessage(hic, ICM_DRAW_WINDOW, cast(DWORD)prc, RECT.sizeof);
+	return cast(DWORD) ICSendMessage(hic, ICM_DRAW_WINDOW, cast(DWORD_PTR) prc, RECT.sizeof);
 }
 
 extern (Windows) {
@@ -1039,7 +1039,7 @@ DECLARE_INTERFACE_(IAVIStream, IUnknown)
 #endif
 };
 
-typedef       IAVIStream FAR* PAVISTREAM;
+alias TypeDef!(IAVIStream FAR*) PAVISTREAM;
 
 #undef  INTERFACE
 #define INTERFACE   IAVIStreaming
@@ -1057,7 +1057,7 @@ DECLARE_INTERFACE_(IAVIStreaming, IUnknown)
     STDMETHOD(End)   (THIS) PURE;
 };
 
-typedef       IAVIStreaming FAR* PAVISTREAMING;
+alias TypeDef!(IAVIStreaming FAR*) PAVISTREAMING;
 
 
 #undef  INTERFACE
@@ -1085,7 +1085,7 @@ DECLARE_INTERFACE_(IAVIEditStream, IUnknown)
 			    LONG cbInfo) PURE;
 };
 
-typedef       IAVIEditStream FAR* PAVIEDITSTREAM;
+alias TypeDef!(IAVIEditStream FAR*) PAVIEDITSTREAM;
 
 #undef  INTERFACE
 #define INTERFACE   IAVIPersistFile
@@ -1095,7 +1095,7 @@ DECLARE_INTERFACE_(IAVIPersistFile, IPersistFile)
     STDMETHOD(Reserved1)(THIS) PURE;
 };
 
-typedef IAVIPersistFile FAR* PAVIPERSISTFILE;
+alias TypeDef!(IAVIPersistFile FAR*) PAVIPERSISTFILE;
 
 #undef  INTERFACE
 #define INTERFACE   IAVIFile
@@ -1132,7 +1132,7 @@ DECLARE_INTERFACE_(IAVIFile, IUnknown)
 };
 
 #undef PAVIFILE
-typedef       IAVIFile FAR* PAVIFILE;
+alias TypeDef!(IAVIFile FAR*) PAVIFILE;
 
 #undef  INTERFACE
 #define INTERFACE   IGetFrame
@@ -1153,7 +1153,7 @@ DECLARE_INTERFACE_(IGetFrame, IUnknown)
 };
 
 #undef PGETFRAME
-typedef IGetFrame FAR* PGETFRAME;
+alias TypeDef!(IGetFrame FAR*) PGETFRAME;
 
 #define DEFINE_AVIGUID(name, l, w1, w2)    DEFINE_GUID(name, l, w1, w2, 0xC0,0,0,0,0,0,0,0x46)
 
@@ -1666,29 +1666,29 @@ UINT MCIWndGetActiveTimer(HWND hwnd)
 UINT MCIWndGetInactiveTimer(HWND hwnd)
 	{ return cast(UINT)SendMessage(hwnd, MCIWNDM_GETINACTIVETIMER, 0, 0); }
 LONG MCIWndRealize(HWND hwnd, BOOL fBkgnd)
-	{ return SendMessage(hwnd, MCIWNDM_REALIZE, cast(WPARAM)fBkgnd, 0); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_REALIZE, cast(WPARAM)fBkgnd, 0); }
 LONG MCIWndSendString(HWND hwnd, LPTSTR sz)
-	{ return SendMessage(hwnd, MCIWNDM_SENDSTRING, 0, cast(LPARAM)sz); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_SENDSTRING, 0, cast(LPARAM)sz); }
 LONG MCIWndReturnString(HWND hwnd, LPVOID lp, UINT len)
-	{ return SendMessage(hwnd, MCIWNDM_RETURNSTRING, cast(WPARAM)len, cast(LPARAM)lp); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_RETURNSTRING, cast(WPARAM)len, cast(LPARAM)lp); }
 LONG MCIWndGetError(HWND hwnd, LPVOID lp, UINT len)
-	{ return SendMessage(hwnd, MCIWNDM_GETERROR, cast(WPARAM)len, cast(LPARAM)lp); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_GETERROR, cast(WPARAM)len, cast(LPARAM)lp); }
 HPALETTE MCIWndGetPalette(HWND hwnd)
 	{ return cast(HPALETTE)SendMessage(hwnd, MCIWNDM_GETPALETTE, 0, 0); }
 LONG MCIWndSetPalette(HWND hwnd, HPALETTE hpal)
-	{ return SendMessage(hwnd, MCIWNDM_SETPALETTE, cast(WPARAM)hpal, 0); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_SETPALETTE, cast(WPARAM)hpal, 0); }
 LONG MCIWndGetFileName(HWND hwnd, LPVOID lp, UINT len)
-	{ return SendMessage(hwnd, MCIWNDM_GETFILENAME, cast(WPARAM)len, cast(LPARAM)lp); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_GETFILENAME, cast(WPARAM)len, cast(LPARAM)lp); }
 LONG MCIWndGetDevice(HWND hwnd, LPVOID lp, UINT len)
-	{ return SendMessage(hwnd, MCIWNDM_GETDEVICE, cast(WPARAM)len, cast(LPARAM)lp); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_GETDEVICE, cast(WPARAM)len, cast(LPARAM)lp); }
 UINT MCIWndGetStyles(HWND hwnd)
-	{ return SendMessage(hwnd, MCIWNDM_GETSTYLES, 0, 0); }
+	{ return cast(UINT) SendMessage(hwnd, MCIWNDM_GETSTYLES, 0, 0); }
 LONG MCIWndChangeStyles(HWND hwnd, UINT mask, LONG value)
-	{ return SendMessage(hwnd, MCIWNDM_CHANGESTYLES, cast(WPARAM)mask, cast(LPARAM)value); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_CHANGESTYLES, cast(WPARAM)mask, cast(LPARAM)value); }
 LONG MCIWndOpenInterface(HWND hwnd, LPUNKNOWN pUnk)
-	{ return SendMessage(hwnd, MCIWNDM_OPENINTERFACE, 0, cast(LPARAM)cast(void*)pUnk); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_OPENINTERFACE, 0, cast(LPARAM)cast(void*)pUnk); }
 LONG MCIWndSetOwner(HWND hwnd, HWND hwndP)
-	{ return SendMessage(hwnd, MCIWNDM_SETOWNER, cast(WPARAM)hwndP, 0); }
+	{ return cast(LONG) SendMessage(hwnd, MCIWNDM_SETOWNER, cast(WPARAM)hwndP, 0); }
 
 enum {
 	MCIWNDM_GETDEVICEID			= WM_USER + 100,
@@ -1819,7 +1819,7 @@ enum {
 	MCI_MODE_OPEN,
 }
 
-alias HANDLE HVIDEO;
+alias TypeDef!(HANDLE) HVIDEO;
 alias HVIDEO* LPHVIDEO;
 
 // Error Return Values

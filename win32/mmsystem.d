@@ -8,7 +8,7 @@
 *                       Placed into public domain                       *
 \***********************************************************************/
 module win32.mmsystem;
-pragma(lib, "winmm.lib");
+pragma(lib, "winmm");
 
 /*	The #defines MAKEFOURCC, mmioFOURCC, sndAlias are used to define
  *	compile-time constants, so they are implemented as templates.
@@ -1044,7 +1044,7 @@ struct MMTIME {
 }
 alias MMTIME* PMMTIME, LPMMTIME;
 
-alias HANDLE HDRVR;
+alias TypeDef!(HANDLE) HDRVR;
 
 struct DRVCONFIGINFO {
 	DWORD dwDCISize;
@@ -1076,9 +1076,9 @@ alias MIDICALLBACK* LPMIDICALLBACK;
 
 +/
 
-alias HANDLE HWAVE;
-alias HANDLE HWAVEIN;
-alias HANDLE HWAVEOUT;
+alias TypeDef!(HANDLE) HWAVE;
+alias TypeDef!(HANDLE) HWAVEIN;
+alias TypeDef!(HANDLE) HWAVEOUT;
 
 alias HWAVEIN* LPHWAVEIN;
 alias HWAVEOUT* LPHWAVEOUT;
@@ -1168,10 +1168,10 @@ struct WAVEFORMATEX {
 alias WAVEFORMATEX* PWAVEFORMATEX, LPWAVEFORMATEX;
 alias CPtr!(WAVEFORMATEX) LPCWAVEFORMATEX;
 
-alias HANDLE HMIDI;
-alias HANDLE HMIDIIN;
-alias HANDLE HMIDIOUT;
-alias HANDLE HMIDISTRM;
+alias TypeDef!(HANDLE) HMIDI;
+alias TypeDef!(HANDLE) HMIDIIN;
+alias TypeDef!(HANDLE) HMIDIOUT;
+alias TypeDef!(HANDLE) HMIDISTRM;
 
 alias HMIDI* LPHMIDI;
 alias HMIDIIN* LPHMIDIIN;
@@ -1287,10 +1287,10 @@ struct AUXCAPSW {
 }
 alias AUXCAPSW* PAUXCAPSW, LPAUXCAPSW;
 
-alias HANDLE HMIXEROBJ;
+alias TypeDef!(HANDLE) HMIXEROBJ;
 alias HMIXEROBJ* LPHMIXEROBJ;
 
-alias HANDLE HMIXER;
+alias TypeDef!(HANDLE) HMIXER;
 alias HMIXER* LPHMIXER;
 
 struct MIXERCAPSA {
@@ -1580,7 +1580,7 @@ alias JOYINFOEX* PJOYINFOEX, LPJOYINFOEX;
 alias DWORD FOURCC;
 alias char* HPSTR;
 
-alias HANDLE HMMIO;
+alias TypeDef!(HANDLE) HMMIO;
 
 alias LRESULT function (LPSTR,UINT,LPARAM,LPARAM) LPMMIOPROC;
 

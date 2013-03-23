@@ -8,7 +8,7 @@
 *                       Placed into public domain                       *
 \***********************************************************************/
 module win32.rpcndr;
-pragma(lib, "rpcrt4.lib");
+pragma(lib, "rpcrt4");
 
 /* Translation notes:
  RPC_CLIENT_ALLOC*, RPC_CLIENT_FREE* were replaced with PRPC_CLIENT_ALLOC, PRPC_CLIENT_FREE
@@ -203,7 +203,7 @@ struct MIDL_STUB_MESSAGE {
 	void* pvDestContext;
 	NDR_SCONTEXT * SavedContextHandles;
 	int ParamNumber;
-	IRpcChannelBuffer * pRpcChannelBuffer;
+	IRpcChannelBuffer  pRpcChannelBuffer;
 	PARRAY_INFO pArrayInfo;
 	uint * SizePtrCountArray;
 	uint * SizePtrOffsetArray;
@@ -384,7 +384,7 @@ enum PROXY_PHASE {
 	PROXY_UNMARSHAL
 }
 
-alias void * RPC_SS_THREAD_HANDLE;
+alias TypeDef!(void *) RPC_SS_THREAD_HANDLE;
 
 extern (Windows) {
 alias void function (void*) NDR_RUNDOWN;
@@ -514,10 +514,10 @@ void  NdrFreeBuffer(PMIDL_STUB_MESSAGE);
 
 CLIENT_CALL_RETURN  NdrClientCall(PMIDL_STUB_DESC,PFORMAT_STRING,...);
 
-int  NdrStubCall(IRpcStubBuffer*, IRpcChannelBuffer*,PRPC_MESSAGE,uint*);
+int  NdrStubCall(IRpcStubBuffer, IRpcChannelBuffer,PRPC_MESSAGE,uint*);
 void  NdrServerCall(PRPC_MESSAGE);
-int  NdrServerUnmarshall(IRpcChannelBuffer*, PRPC_MESSAGE,PMIDL_STUB_MESSAGE,PMIDL_STUB_DESC,PFORMAT_STRING,void*);
-void  NdrServerMarshall(IRpcStubBuffer*, IRpcChannelBuffer*,PMIDL_STUB_MESSAGE,PFORMAT_STRING);
+int  NdrServerUnmarshall(IRpcChannelBuffer, PRPC_MESSAGE,PMIDL_STUB_MESSAGE,PMIDL_STUB_DESC,PFORMAT_STRING,void*);
+void  NdrServerMarshall(IRpcStubBuffer, IRpcChannelBuffer,PMIDL_STUB_MESSAGE,PFORMAT_STRING);
 RPC_STATUS  NdrMapCommAndFaultStatus(PMIDL_STUB_MESSAGE,uint*,uint*,RPC_STATUS);
 int  NdrSH_UPDecision(PMIDL_STUB_MESSAGE,ubyte**,RPC_BUFPTR);
 int  NdrSH_TLUPDecision(PMIDL_STUB_MESSAGE,ubyte**);

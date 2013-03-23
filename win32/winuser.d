@@ -8,7 +8,7 @@
 *                       Placed into public domain                       *
 \***********************************************************************/
 module win32.winuser;
-pragma(lib, "user32.lib");
+pragma(lib, "user32");
 
 // Conversion Notes:
 // The following macros were for win16 only, and are not included in this file:
@@ -30,6 +30,11 @@ template MAKEINTATOM_T(int i) {
 }
 
 const WC_DIALOG = MAKEINTATOM_T!(0x8002);
+
+const FAPPCOMMAND_MOUSE = 0x8000;
+const FAPPCOMMAND_KEY   = 0;
+const FAPPCOMMAND_OEM   = 0x1000;
+const FAPPCOMMAND_MASK  = 0xF000;
 
 const FVIRTKEY  = 1;
 const FNOINVERT = 2;
@@ -709,7 +714,10 @@ const IDC_SIZEWE      = MAKEINTRESOURCE_T!(32644);
 const IDC_SIZENS      = MAKEINTRESOURCE_T!(32645);
 const IDC_SIZEALL     = MAKEINTRESOURCE_T!(32646);
 const IDC_NO          = MAKEINTRESOURCE_T!(32648);
+static if(WINVER >= 0x0500)
+{
 const IDC_HAND        = MAKEINTRESOURCE_T!(32649);
+}
 const IDC_APPSTARTING = MAKEINTRESOURCE_T!(32650);
 const IDC_HELP        = MAKEINTRESOURCE_T!(32651);
 const IDC_ICON        = MAKEINTRESOURCE_T!(32641);
@@ -720,9 +728,23 @@ const IDI_QUESTION    = MAKEINTRESOURCE_T!(32514);
 const IDI_EXCLAMATION = MAKEINTRESOURCE_T!(32515);
 const IDI_ASTERISK    = MAKEINTRESOURCE_T!(32516);
 const IDI_WINLOGO     = MAKEINTRESOURCE_T!(32517);
+static if(WINVER >= 0x0600)
+{
+const IDI_SHIELD      = MAKEINTRESOURCE_T!(32518);
+}
+
 const IDI_WARNING     = IDI_EXCLAMATION;
 const IDI_ERROR       = IDI_HAND;
 const IDI_INFORMATION = IDI_ASTERISK;
+
+static if(_WIN32_WINNT >= 0x0500) {
+
+const MNGOF_TOPGAP = 0x00000001;
+const MNGOF_BOTTOMGAP = 0x00000002;
+const MNGO_NOINTERFACE = 0x00000000;
+const MNGO_NOERROR = 0x00000001;
+
+}
 
 const MIIM_STATE = 1;
 const MIIM_ID = 2;
@@ -1146,6 +1168,20 @@ const OIC_INFORMATION = OIC_NOTE;
 
 const HELPINFO_MENUITEM = 2;
 const HELPINFO_WINDOW = 1;
+
+static if (_WIN32_WINNT >= 0x0501) {
+
+const WTS_CONSOLE_CONNECT = 0x1;
+const WTS_CONSOLE_DISCONNECT = 0x2;
+const WTS_REMOTE_CONNECT = 0x3;
+const WTS_REMOTE_DISCONNECT = 0x4;
+const WTS_SESSION_LOGON = 0x5;
+const WTS_SESSION_LOGOFF = 0x6;
+const WTS_SESSION_LOCK = 0x7;
+const WTS_SESSION_UNLOCK = 0x8;
+const WTS_SESSION_REMOTE_CONTROL = 0x9;
+
+}
 
 const MSGF_DIALOGBOX = 0;
 const MSGF_MESSAGEBOX = 1;
@@ -1576,6 +1612,10 @@ const WM_SYSCOMMAND=274;
 const WM_SYSDEADCHAR=263;
 const WM_SYSKEYDOWN=260;
 const WM_SYSKEYUP=261;
+static if(_WIN32_WINNT >= 0x0501) {
+const WM_TABLET_FIRST=704;
+const WM_TABLET_LAST=735;
+}
 const WM_TCARD=82;
 const WM_THEMECHANGED=794;
 const WM_TIMECHANGE=30;
@@ -1589,9 +1629,18 @@ const WM_VSCROLLCLIPBOARD=778;
 const WM_WINDOWPOSCHANGED=71;
 const WM_WINDOWPOSCHANGING=70;
 const WM_WININICHANGE=26;
+static if(_WIN32_WINNT >= 0x0501) {
+const WM_WTSSESSION_CHANGE=689;
+}
 const WM_INPUT=255;
 const WM_KEYFIRST=256;
+static if(_WIN32_WINNT >= 0x0501) {
+const WM_UNICHAR=265;
+const WM_KEYLAST=265;
+const UNICODE_NOCHAR=0xFFFF;
+} else {
 const WM_KEYLAST=264;
+}        
 const WM_SYNCPAINT=136;
 const WM_MOUSEACTIVATE=33;
 const WM_MOUSEMOVE=512;
@@ -1606,7 +1655,14 @@ const WM_MBUTTONUP=520;
 const WM_MBUTTONDBLCLK=521;
 const WM_MOUSEWHEEL=522;
 const WM_MOUSEFIRST=512;
-static if (_WIN32_WINNT >= 0x500) {
+static if (_WIN32_WINNT >= 0x600) {
+const WM_XBUTTONDOWN=523;
+const WM_XBUTTONUP=524;
+const WM_XBUTTONDBLCLK=525;
+const WM_MOUSEHWHEEL=526;
+const WM_MOUSELAST=526;
+}
+else static if (_WIN32_WINNT >= 0x500) {
 const WM_XBUTTONDOWN=523;
 const WM_XBUTTONUP=524;
 const WM_XBUTTONDBLCLK=525;
@@ -1632,6 +1688,9 @@ const BM_GETIMAGE=246;
 const BM_GETSTATE=242;
 const BM_SETCHECK=241;
 const BM_SETIMAGE=247;
+static if(WINVER >= 0x0600) {
+const BM_SETDONTCLICK = 248;
+}
 const BM_SETSTATE=243;
 const BM_SETSTYLE=244;
 const BN_CLICKED=0;
@@ -1679,6 +1738,10 @@ const CB_SETITEMHEIGHT=339;
 const CB_SETLOCALE=345;
 const CB_SETTOPINDEX=348;
 const CB_SHOWDROPDOWN=335;
+
+static if(_WIN32_WINNT >= 0x0501) {
+const CB_GETCOMBOBOXINFO = 356;
+}
 
 const CBN_CLOSEUP=8;
 const CBN_DBLCLK=2;
@@ -1730,6 +1793,11 @@ const EM_SETTABSTOPS=203;
 const EM_SETWORDBREAKPROC=208;
 const EM_UNDO=199;
 
+static if(WINVER >= 0x0500) {
+const EM_SETIMESTATUS=216;
+const EM_GETIMESTATUS=217;
+}
+
 const EN_CHANGE=768;
 const EN_ERRSPACE=1280;
 const EN_HSCROLL=1537;
@@ -1779,6 +1847,9 @@ const LB_SETLOCALE=421;
 const LB_SETSEL=389;
 const LB_SETTABSTOPS=402;
 const LB_SETTOPINDEX=407;
+static if(_WIN32_WINNT >= 0x0501) {
+const LB_GETLISTBOXINFO=434;
+}
 
 const LBN_DBLCLK=2;
 const LBN_ERRSPACE=-2;
@@ -1795,6 +1866,10 @@ const SBM_SETPOS=224;
 const SBM_SETRANGE=226;
 const SBM_SETRANGEREDRAW=230;
 const SBM_SETSCROLLINFO=233;
+static if(_WIN32_WINNT >= 0x0501) {
+const SBM_GETSCROLLBARINFO=235;
+}
+
 const STM_GETICON=369;
 const STM_GETIMAGE=371;
 const STM_SETICON=368;
@@ -2570,14 +2645,14 @@ const RIDEV_APPKEYS      = 0x00000400;
 // Callbacks
 // ---------
 extern (Windows) {
-	alias BOOL function (HWND, UINT, WPARAM, LPARAM)    DLGPROC;
-	alias void function (HWND, UINT, UINT, DWORD)       TIMERPROC;
+	alias INT_PTR function (HWND, UINT, WPARAM, LPARAM) DLGPROC;
+	alias void function (HWND, UINT, UINT_PTR, DWORD)   TIMERPROC;
 	alias BOOL function (HDC, LPARAM, int)              GRAYSTRINGPROC;
 	alias LRESULT function (int, WPARAM, LPARAM)        HOOKPROC;
 	alias BOOL function (HWND, LPCSTR, HANDLE)          PROPENUMPROCA;
 	alias BOOL function (HWND, LPCWSTR, HANDLE)         PROPENUMPROCW;
-	alias BOOL function (HWND, LPSTR, HANDLE, DWORD)    PROPENUMPROCEXA;
-	alias BOOL function (HWND, LPWSTR, HANDLE, DWORD)   PROPENUMPROCEXW;
+	alias BOOL function (HWND, LPSTR, HANDLE, ULONG_PTR)    PROPENUMPROCEXA;
+	alias BOOL function (HWND, LPWSTR, HANDLE, ULONG_PTR)   PROPENUMPROCEXW;
 	alias int function (LPSTR, int, int, int)           EDITWORDBREAKPROCA;
 	alias int function (LPWSTR, int, int, int)          EDITWORDBREAKPROCW;
 	alias LRESULT function (HWND, UINT, WPARAM, LPARAM) WNDPROC;
@@ -2591,7 +2666,7 @@ extern (Windows) {
 	}
 	alias BOOL function (LPSTR, LPARAM)                 NAMEENUMPROCA;
 	alias BOOL function (LPWSTR, LPARAM)                NAMEENUMPROCW;
-	alias void function (HWND, UINT, DWORD, LRESULT)    SENDASYNCPROC;
+	alias void function (HWND, UINT, ULONG_PTR, LRESULT)    SENDASYNCPROC;
 
 	alias NAMEENUMPROCA DESKTOPENUMPROCA;
 	alias NAMEENUMPROCW DESKTOPENUMPROCW;
@@ -2599,9 +2674,9 @@ extern (Windows) {
 	alias NAMEENUMPROCW WINSTAENUMPROCW;
 }
 
-alias HANDLE HHOOK;
-alias HANDLE HDWP;
-alias HANDLE HDEVNOTIFY;
+alias TypeDef!(HANDLE) HHOOK;
+alias TypeDef!(HANDLE) HDWP;
+alias TypeDef!(HANDLE) HDEVNOTIFY;
 
 struct ACCEL {
 	BYTE fVirt;
@@ -2673,6 +2748,17 @@ struct CBTACTIVATESTRUCT {
 }
 alias CBTACTIVATESTRUCT* LPCBTACTIVATESTRUCT;
 
+static if (_WIN32_WINNT >= 0x0501) {
+
+struct WTSSESSION_NOTIFICATION
+{
+    DWORD cbSize;
+    DWORD dwSessionId;
+}
+alias WTSSESSION_NOTIFICATION* PWTSSESSION_NOTIFICATION;
+
+}
+    
 struct CLIENTCREATESTRUCT {
 	HANDLE hWindowMenu;
 	UINT   idFirstChild;
@@ -2822,7 +2908,7 @@ alias ICONINFO* PICONINFO;
 
 struct NMHDR {
 	HWND hwndFrom;
-	UINT idFrom;
+	UINT_PTR idFrom;
 	UINT code;
 }
 alias NMHDR* LPNMHDR;
@@ -2886,6 +2972,20 @@ struct WNDCLASSEXW {
 	HICON     hIconSm;
 }
 alias WNDCLASSEXW* LPWNDCLASSEXW, PWNDCLASSEXW;
+
+static if(_WIN32_WINNT >= 0x0500) {
+
+struct MENUGETOBJECTINFO
+{
+    DWORD dwFlags;
+    UINT uPos;
+    HMENU hmenu;
+    PVOID riid;
+    PVOID pvObj;
+}
+alias MENUGETOBJECTINFO* PMENUGETOBJECTINFO;
+
+}
 
 struct MENUITEMINFOA {
 	UINT    cbSize = MENUITEMINFOA.sizeof;
@@ -3553,7 +3653,7 @@ struct BSMINFO {
 }
 alias BSMINFO* PBSMINFO;
 
-alias HANDLE HRAWINPUT;
+alias TypeDef!(HANDLE) HRAWINPUT;
 
 struct RAWINPUTHEADER {
 	DWORD dwType;
@@ -3797,10 +3897,10 @@ BOOL DestroyIcon(HICON);
 BOOL DestroyMenu(HMENU);
 BOOL DestroyWindow(HWND);
 
-int DialogBoxParamA(HINSTANCE, LPCSTR, HWND, DLGPROC, LPARAM);
-int DialogBoxParamW(HINSTANCE, LPCWSTR, HWND, DLGPROC, LPARAM);
-int DialogBoxIndirectParamA(HINSTANCE, LPCDLGTEMPLATE, HWND, DLGPROC, LPARAM);
-int DialogBoxIndirectParamW(HINSTANCE, LPCDLGTEMPLATE, HWND, DLGPROC, LPARAM);
+INT_PTR DialogBoxParamA(HINSTANCE, LPCSTR, HWND, DLGPROC, LPARAM);
+INT_PTR DialogBoxParamW(HINSTANCE, LPCWSTR, HWND, DLGPROC, LPARAM);
+INT_PTR DialogBoxIndirectParamA(HINSTANCE, LPCDLGTEMPLATE, HWND, DLGPROC, LPARAM);
+INT_PTR DialogBoxIndirectParamW(HINSTANCE, LPCDLGTEMPLATE, HWND, DLGPROC, LPARAM);
 
 } // extern (Windows)
 
@@ -3840,22 +3940,22 @@ HWND CreateWindowW(LPCWSTR a, LPCWSTR b, DWORD c, int d, int e, int f, int g, HW
 	return CreateWindowExW(0, a, b, c, d, e, f, g, h, i, j, k);
 }
 
-int DialogBoxA(HINSTANCE i, LPCSTR t, HWND p, DLGPROC f)
+INT_PTR DialogBoxA(HINSTANCE i, LPCSTR t, HWND p, DLGPROC f)
 {
 	return DialogBoxParamA(i, t, p, f, 0);
 }
 
-int DialogBoxW(HINSTANCE i, LPCWSTR t, HWND p, DLGPROC f)
+INT_PTR DialogBoxW(HINSTANCE i, LPCWSTR t, HWND p, DLGPROC f)
 {
 	return DialogBoxParamW(i, t, p, f, 0);
 }
 
-int DialogBoxIndirectA(HINSTANCE i, LPCDLGTEMPLATE t, HWND p, DLGPROC f)
+INT_PTR DialogBoxIndirectA(HINSTANCE i, LPCDLGTEMPLATE t, HWND p, DLGPROC f)
 {
 	return DialogBoxIndirectParamA(i, t, p, f, 0);
 }
 
-int DialogBoxIndirectW(HINSTANCE i, LPCDLGTEMPLATE t, HWND p, DLGPROC f)
+INT_PTR DialogBoxIndirectW(HINSTANCE i, LPCDLGTEMPLATE t, HWND p, DLGPROC f)
 {
 	return DialogBoxIndirectParamW(i, t, p, f, 0);
 }
@@ -3898,7 +3998,7 @@ BOOL EnableMenuItem(HMENU, UINT, UINT);
 BOOL EnableScrollBar(HWND, UINT, UINT);
 BOOL EnableWindow(HWND, BOOL);
 BOOL EndDeferWindowPos(HDWP);
-BOOL EndDialog(HWND, int);
+BOOL EndDialog(HWND, INT_PTR);
 BOOL EndMenu();
 BOOL EndPaint(HWND, CPtr!(PAINTSTRUCT));
 BOOL EnumChildWindows(HWND, ENUMWINDOWSPROC, LPARAM);
@@ -4061,8 +4161,8 @@ BOOL HideCaret(HWND);
 BOOL HiliteMenuItem(HWND, HMENU, UINT, UINT);
 BOOL InflateRect(LPRECT, int, int);
 BOOL InSendMessage();
-BOOL InsertMenuA(HMENU, UINT, UINT, UINT, LPCSTR);
-BOOL InsertMenuW(HMENU, UINT, UINT, UINT, LPCWSTR);
+BOOL InsertMenuA(HMENU, UINT, UINT, UINT_PTR, LPCSTR);
+BOOL InsertMenuW(HMENU, UINT, UINT, UINT_PTR, LPCWSTR);
 BOOL InsertMenuItemA(HMENU, UINT, BOOL, LPCMENUITEMINFOA);
 BOOL InsertMenuItemW(HMENU, UINT, BOOL, LPCMENUITEMINFOW);
 INT InternalGetWindowText(HWND, LPWSTR, INT);
@@ -4092,7 +4192,7 @@ BOOL IsWindowUnicode(HWND);
 BOOL IsWindowVisible(HWND);
 BOOL IsZoomed(HWND);
 void keybd_event(BYTE, BYTE, DWORD, DWORD);
-BOOL KillTimer(HWND, UINT);
+BOOL KillTimer(HWND, UINT_PTR);
 HACCEL LoadAcceleratorsA(HINSTANCE, LPCSTR);
 HACCEL LoadAcceleratorsW(HINSTANCE, LPCWSTR);
 HBITMAP LoadBitmapA(HINSTANCE, LPCSTR);
@@ -4130,8 +4230,8 @@ int MessageBoxExA(HWND, LPCSTR, LPCSTR, UINT, WORD);
 int MessageBoxExW(HWND, LPCWSTR, LPCWSTR, UINT, WORD);
 int MessageBoxIndirectA(CPtr!(MSGBOXPARAMSA));
 int MessageBoxIndirectW(CPtr!(MSGBOXPARAMSW));
-BOOL ModifyMenuA(HMENU, UINT, UINT, UINT, LPCSTR);
-BOOL ModifyMenuW(HMENU, UINT, UINT, UINT, LPCWSTR);
+BOOL ModifyMenuA(HMENU, UINT, UINT, UINT_PTR, LPCSTR);
+BOOL ModifyMenuW(HMENU, UINT, UINT, UINT_PTR, LPCWSTR);
 void mouse_event(DWORD, DWORD, DWORD, DWORD, ULONG_PTR);
 BOOL MoveWindow(HWND, int, int, int, int, BOOL);
 DWORD MsgWaitForMultipleObjects(DWORD, CPtr!(HANDLE), BOOL, DWORD, DWORD);
@@ -4231,7 +4331,7 @@ BOOL SetScrollRange(HWND, int, int, int, BOOL);
 BOOL SetSysColors(int, CPtr!(INT) , CPtr!(COLORREF) );
 BOOL SetSystemCursor(HCURSOR, DWORD);
 BOOL SetThreadDesktop(HDESK);
-UINT SetTimer(HWND, UINT, UINT, TIMERPROC);
+UINT_PTR SetTimer(HWND, UINT_PTR, UINT, TIMERPROC);
 BOOL SetUserObjectInformationA(HANDLE, int, PVOID, DWORD);
 BOOL SetUserObjectInformationW(HANDLE, int, PVOID, DWORD);
 BOOL SetUserObjectSecurity(HANDLE, PSECURITY_INFORMATION, PSECURITY_DESCRIPTOR);
@@ -4302,7 +4402,7 @@ extern (C) {
 
 
 // These shouldn't be necessary for D.
-alias char* va_list_;
+alias TypeDef!(char*) va_list_;
 int wvsprintfA(LPSTR, LPCSTR, va_list_ arglist);
 int wvsprintfW(LPWSTR, LPCWSTR, va_list_ arglist);
 
