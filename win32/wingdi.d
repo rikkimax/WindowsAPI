@@ -4404,7 +4404,7 @@ extern(Windows) {
 }
 
 static if (WINVER >= 0x0500) {
-		BOOL AlphaBlend(HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION);
+		BOOL GdiAlphaBlend(HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION);
 		BOOL GradientFill(HDC, PTRIVERTEX, ULONG, PVOID, ULONG, ULONG);
 		BOOL TransparentBlt(HDC, int, int, int, int, HDC, int, int, int, int, UINT);
 	}
