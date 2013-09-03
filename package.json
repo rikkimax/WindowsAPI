@@ -6,6 +6,7 @@
 	"targetName": "WindowsAPI",
 	"sourcePaths": ["win32"],
 	"versions": ["WindowsXP", "Unicode"],
+	"importPaths": ["win32"],
 	"excludedSourceFiles": [
 		"win32/winsock.d",
 		"win32/testall.d",
