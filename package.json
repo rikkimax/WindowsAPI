@@ -42,7 +42,7 @@
 		"win32/directx/dxgitype.d"
 	],
 	"buildRequirements": ["allowWarnings"],
-	"libs": [
+	"libs-windows-x86": [
 		"msvfw32",
 		"shlwapi"
 	]
