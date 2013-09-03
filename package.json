@@ -1,0 +1,48 @@
+{
+	"name": "windowsapi",
+	"description": "Windows bindings mirrored on github.",
+	"homepage": "https://github.com/AndrejMitrovic/WindowsAPI",
+	"targetType": "staticLibrary",
+	"targetName": "WindowsAPI",
+	"sourcePaths": ["win32"],
+	"versions": ["WindowsXP", "Unicode"],
+	"excludedSourceFiles": [
+		"win32/winsock.d",
+		"win32/testall.d",
+
+		"win32/directx/d3d9.d",
+		"win32/directx/d3d9caps.d",
+		"win32/directx/d3d9types.d",
+		
+		"win32/directx/d3d10.d",
+		"win32/directx/d3d10effect.d",
+		"win32/directx/d3d10misc.d",
+		"win32/directx/d3d10shader.d",
+		
+		"win32/directx/d3dx9.d",
+		"win32/directx/d3dx10.d",
+		
+		"win32/directx/d3dx10.d",
+		"win32/directx/d3dx10async.d",
+		"win32/directx/d3dx10core.d",
+		"win32/directx/d3dx10math.d",
+		"win32/directx/d3dx10mesh.d",
+		"win32/directx/d3dx10tex.d",
+		
+		"win32/directx/dinput8.d",
+		"win32/directx/dsound8.d",
+		
+		"win32/directx/dxerr.d",
+		
+		"win32/directx/dxerr8.d",
+		"win32/directx/dxerr9.d",
+		
+		"win32/directx/dxgi.d",
+		"win32/directx/dxgitype.d"
+	],
+	"buildRequirements": ["allowWarnings"],
+	"libs": [
+		"msvfw32",
+		"shlwapi"
+	]
+}
